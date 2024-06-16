@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Dashboard</title>
+    <link rel="shortcut icon" href="https://gate.dinamika.ac.id/icon-dinamika.png" type="image/x-icon">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <!-- Fonts and icons -->
+    <script src="../static/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid", "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands", "simple-line-icons",
+                ],
+                urls: ["../static/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+
+        window.onload = function () {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        };
+    </script>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/plugins.min.css" />
+    <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
+
+    <style>
+        .form-group {
+            padding: 10px 0 !important;
+            margin-bottom: 10px !important;
+        }
+
+        #logouts {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+        }
+
+        #logouts:focus,
+        #logouts:active {
+            background-color: #6861ce !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <!-- Logo Header -->
+                <div class="logo-header" data-background-color="dark">
+                    <a href="" class="logo">
+                        <h5 style="margin-top: 10px !important; color: white !important;">Dashboard Admin</h5>
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-secondary">
+                        <li class="nav-item active">
+                            <a href="" style="margin: 0 !important; padding: 10px 20px !important;">
+                                <i class="fas fa-clock"></i>
+                                <p style="padding-top: 4px !important;">Activity Log</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="index.html" class="logo">
+                            <img src="../static/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
+                                height="20" />
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <nav
+                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="submit" class="btn btn-search pe-1">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </button>
+                                </div>
+                                <input type="text" placeholder="Search ..." class="form-control" />
+                            </div>
+                        </nav>
+
+                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                            <li class="nav-item topbar-user dropdown hidden-caret">
+                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                    aria-expanded="false">
+                                    <div class="avatar-sm">
+                                        <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg" alt="profiles"
+                                            class="avatar-img rounded-circle" />
+                                    </div>
+                                    <span class="profile-username" style="margin-top: 2px !important;">
+                                        <span class="op-7">Hi,</span>
+                                        <span class="fw-bold">Super Admin</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                    <div class="dropdown-user-scroll scrollbar-outer">
+                                        <li>
+                                            <div class="user-box">
+                                                <div class="avatar-lg">
+                                                    <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg" alt="profiles"
+                                                        class="avatar-img rounded" />
+                                                </div>
+                                                <div class="u-text">
+                                                    <h4 style="margin-top: 10px !important;">Super Admin</h4>
+                                                    <p style="margin-top: 2px !important;" class="text-muted">
+                                                        admin@healthme.co.id</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                            <a id="logouts" class="dropdown-item" href="/logout">Logout</a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- End Navbar -->
+            </div>
+
+            <div class="container">
+                <div class="page-inner">
+                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                        <div>
+                            <h3 class="fw-bold">Activity Log</h3>
+                            <h6 class="op-7 mb-3" id="days"></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-title">
+                                            <i class="fas fa-clipboard-list"
+                                                style="margin: 0 10px 0 8px !important;"></i>
+                                            List Data
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#exportModal">
+                                            <span class="btn-label">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            Export
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="basic-datatables" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Timestamps</th>
+                                                    <th>Uploaded File Name (.wav)</th>
+                                                    <th>Status</th>
+                                                    <th>Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for row in data %}
+                                                <tr>
+                                                    <td>{{ row.id }}</td>
+                                                    <td>{{ row.timestamp }}</td>
+                                                    <td>{{ row.fileName }}</td>
+                                                    <td>
+                                                        {% if row.status == 'SUCCESS' %}
+                                                        <span class="badge badge-success">{{ row.status }}</span>
+                                                        {% else %}
+                                                        <span class="badge badge-danger">{{ row.status }}</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ row.result }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        Copyright © 2024 Computer Engineering Undergraduate Study Program. All rights reserved.
+                    </nav>
+                    <div>
+                        <a href="" style="margin-right: 20px !important;">Privacy Policy</a>
+                        <a href="" style="margin-right: 20px !important;">Terms of Service</a>
+                        <a href="">Help Center</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel"><b>Export Data</b></h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: black !important; margin-bottom: 6px !important;">Here you can export your data.
+                        Please select the date range of the data you need to export to excel.</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="start">Start Date</label>
+                                <input type="date" class="form-control" id="start" placeholder="Start Date" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="end">End Date</label>
+                                <input type="date" class="form-control" id="end" placeholder="End Date" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="export-to-excel" class="btn btn-sm btn-secondary">Export Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../static/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/core/popper.min.js"></script>
+    <script src="../static/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="../static/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="../static/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="../static/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="../static/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="../static/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="../static/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="../static/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="../static/js/kaiadmin.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable();
+            $("#export-to-excel").click(function () {
+                var startDate = $("#start").val();
+                var endDate = $("#end").val();
+
+                if (!startDate || !endDate) {
+                    $.notify({
+                        icon: 'fas fa-times',
+                        title: 'Oh No!',
+                        message: 'Both start and end dates are required.',
+                    }, {
+                        type: 'error',
+                        placement: {
+                            from: 'top',
+                            align: 'right',
+                        },
+                        time: 1000,
+                    });
+                    return;
+                }
+
+                $.ajax({
+                    url: "/exportData",
+                    type: "GET",
+                    data: {
+                        start: startDate,
+                        end: endDate
+                    },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function (response) {
+                        var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'data.xlsx';
+                        link.click();
+
+                        $.notify({
+                            icon: 'fa fa-bell',
+                            title: 'Congratulations',
+                            message: 'You have successfully exported the data.',
+                        }, {
+                            type: 'secondary',
+                            placement: {
+                                from: 'top',
+                                align: 'right',
+                            },
+                            time: 1000,
+                        });
+                        $('#start').val('');
+                        $('#end').val('');
+                        $('#exportModal').modal('hide');
+                    },
+                    error: function () {
+                        $.notify({
+                            icon: 'fas fa-times',
+                            title: 'Oh No!',
+                            message: 'Failed to export data. Please try again later.',
+                        }, {
+                            type: 'error',
+                            placement: {
+                                from: 'top',
+                                align: 'right',
+                            },
+                            time: 1000,
+                        });
+                        $('#start').val('');
+                        $('#end').val('');
+                        $('#exportModal').modal('hide');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        function updateDateTime() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            const now = new Date();
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            const formattedDateTime = `${day}, ${date} ${month} ${year} | ${hours}:${minutes}:${seconds}`;
+            document.getElementById('days').innerText = formattedDateTime;
+        }
+    </script>
+    <script>
+        // Check if error message exists in the template
+        const successMessage = '{{ success }}';
+        if (successMessage && successMessage !== 'None') {
+            $.notify({
+                icon: 'fa fa-bell',
+                title: 'Welcome Back!',
+                message: successMessage,
+            }, {
+                type: 'secondary',
+                placement: {
+                    from: 'top',
+                    align: 'center',
+                },
+                time: 1000,
+            });
+            successMessage = ''
+        }
+    </script>
+</body>
+
+</html>

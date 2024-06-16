@@ -1,0 +1,14 @@
+# Mengabaikan folder capstone
+capstone/
+
+# Mengabaikan folder pycache
+__pycache__/
+
+# Mengabaikan file log
+*.log
+
+# Mengabaikan file build output
+/build/
+
+# Mengabaikan file temporer
+*.tmp
