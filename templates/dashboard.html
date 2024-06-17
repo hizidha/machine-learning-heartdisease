@@ -3,8 +3,8 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Dashboard</title>
-    <link rel="shortcut icon" href="https://gate.dinamika.ac.id/icon-dinamika.png" type="image/x-icon">
+    <title>Dashboard | HeartWave</title>
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <!-- Fonts and icons -->
     <script src="../static/js/plugin/webfont/webfont.min.js"></script>
@@ -133,8 +133,8 @@
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                                     aria-expanded="false">
                                     <div class="avatar-sm">
-                                        <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg" alt="profiles"
-                                            class="avatar-img rounded-circle" />
+                                        <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg"
+                                            alt="profiles" class="avatar-img rounded-circle" />
                                     </div>
                                     <span class="profile-username" style="margin-top: 2px !important;">
                                         <span class="op-7">Hi,</span>
@@ -146,13 +146,13 @@
                                         <li>
                                             <div class="user-box">
                                                 <div class="avatar-lg">
-                                                    <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg" alt="profiles"
-                                                        class="avatar-img rounded" />
+                                                    <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg"
+                                                        alt="profiles" class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
                                                     <h4 style="margin-top: 10px !important;">Super Admin</h4>
                                                     <p style="margin-top: 2px !important;" class="text-muted">
-                                                        admin@healthme.co.id</p>
+                                                        admin@mail.heartwave.id</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -237,13 +237,8 @@
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">
-                        Copyright © 2024 Computer Engineering Undergraduate Study Program. All rights reserved.
+                        Copyright © 2024 HeartWave. All rights reserved.
                     </nav>
-                    <div>
-                        <a href="" style="margin-right: 20px !important;">Privacy Policy</a>
-                        <a href="" style="margin-right: 20px !important;">Terms of Service</a>
-                        <a href="">Help Center</a>
-                    </div>
                 </div>
             </footer>
         </div>
@@ -294,27 +289,14 @@
     <!-- jQuery Scrollbar -->
     <script src="../static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-    <!-- Chart JS -->
-    <script src="../static/js/plugin/chart.js/chart.min.js"></script>
-
     <!-- jQuery Sparkline -->
     <script src="../static/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-    <!-- Chart Circle -->
-    <script src="../static/js/plugin/chart-circle/circles.min.js"></script>
 
     <!-- Datatables -->
     <script src="../static/js/plugin/datatables/datatables.min.js"></script>
 
     <!-- Bootstrap Notify -->
     <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- jQuery Vector Maps -->
-    <script src="../static/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="../static/js/plugin/jsvectormap/world.js"></script>
-
-    <!-- Sweet Alert -->
-    <script src="../static/js/plugin/sweetalert/sweetalert.min.js"></script>
 
     <!-- Kaiadmin JS -->
     <script src="../static/js/kaiadmin.min.js"></script>
@@ -328,11 +310,11 @@
 
                 if (!startDate || !endDate) {
                     $.notify({
-                        icon: 'fas fa-times',
+                        icon: 'fa fa-exclamation-triangle',
                         title: 'Oh No!',
                         message: 'Both start and end dates are required.',
                     }, {
-                        type: 'error',
+                        type: 'danger',
                         placement: {
                             from: 'top',
                             align: 'right',
@@ -377,11 +359,11 @@
                     },
                     error: function () {
                         $.notify({
-                            icon: 'fas fa-times',
+                            icon: 'fa fa-exclamation-triangle',
                             title: 'Oh No!',
                             message: 'Failed to export data. Please try again later.',
                         }, {
-                            type: 'error',
+                            type: 'danger',
                             placement: {
                                 from: 'top',
                                 align: 'right',
@@ -394,6 +376,23 @@
                     }
                 });
             });
+
+            const successMessage = '{{ success }}';
+            if (successMessage && successMessage !== 'None') {
+                $.notify({
+                    icon: 'fa fa-bell',
+                    title: 'Welcome Back!',
+                    message: successMessage,
+                }, {
+                    type: 'secondary',
+                    placement: {
+                        from: 'top',
+                        align: 'center',
+                    },
+                    time: 1000,
+                });
+                successMessage = ''
+            }
         });
     </script>
 
@@ -413,25 +412,6 @@
 
             const formattedDateTime = `${day}, ${date} ${month} ${year} | ${hours}:${minutes}:${seconds}`;
             document.getElementById('days').innerText = formattedDateTime;
-        }
-    </script>
-    <script>
-        // Check if error message exists in the template
-        const successMessage = '{{ success }}';
-        if (successMessage && successMessage !== 'None') {
-            $.notify({
-                icon: 'fa fa-bell',
-                title: 'Welcome Back!',
-                message: successMessage,
-            }, {
-                type: 'secondary',
-                placement: {
-                    from: 'top',
-                    align: 'center',
-                },
-                time: 1000,
-            });
-            successMessage = ''
         }
     </script>
 </body>

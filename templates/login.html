@@ -3,8 +3,8 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Login as Admin</title>
-    <link rel="shortcut icon" href="https://gate.dinamika.ac.id/icon-dinamika.png" type="image/x-icon">
+    <title>Login | HeartWave</title>
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <!-- Fonts and icons -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -41,7 +41,7 @@
 
         .card {
             margin-top: 60px !important;
-            padding: 48px 16px !important;
+            padding: 38px 16px !important;
         }
 
         .form-control:focus~label {
@@ -63,7 +63,7 @@
 
 <body>
     <div class="containers">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
                     <form action="/dashboard" method="POST">
@@ -78,15 +78,16 @@
                                 placeholder="Your Password">
                             <label for="floatingPassword">Password</label>
                         </div>
-                        <button type="submit" style="width: 100%;" class="btn btn-secondary mt-1">Login</button>
+                        <button type="submit" style="width: 100%;" class="btn btn-secondary">Login</button>
                     </form>
+                    <a href="/" style="width: 100%;" class="btn btn-black mt-3">Back to Home Page</a>
                 </div>
             </div>
         </div>
     </div>
 
     <footer>
-        Copyright © 2024 Computer Engineering Undergraduate Study Program. All rights reserved.
+        Copyright © 2024 <b>HeartWave</b>. All rights reserved.
     </footer>
 
     <!--   Core JS Files   -->
@@ -96,13 +97,6 @@
 
     <!-- Bootstrap Notify -->
     <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- jQuery Vector Maps -->
-    <script src="../static/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="../static/js/plugin/jsvectormap/world.js"></script>
-
-    <!-- Sweet Alert -->
-    <script src="../static/js/plugin/sweetalert/sweetalert.min.js"></script>
 
     <!-- Kaiadmin JS -->
     <script src="../static/js/kaiadmin.min.js"></script>
@@ -114,7 +108,7 @@
 
         if (errorMessage) {
             $.notify({
-                icon: 'fas fa-user-times',
+                icon: 'fa fa-user-times',
                 title: 'Login Error',
                 message: errorMessage,
             }, {

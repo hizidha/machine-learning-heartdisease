@@ -1,10 +1,13 @@
 from flask import Flask, redirect, url_for, request, session, render_template, send_file
-from middleware.users import login_required, add_no_cache_headers, is_logged_in
-from flask_mysqldb import MySQL
 from dotenv import load_dotenv
+from flask_mysqldb import MySQL
+from datetime import datetime
 import pandas as pd
-import io
-import os
+import io, os
+
+from middleware.users import login_required, add_no_cache_headers, is_logged_in
+from model.models import preprocessAudio
+
 
 load_dotenv()
 
@@ -20,13 +23,15 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
+
 @app.after_request
 def after_request(response):
     return add_no_cache_headers(response)
 
 @app.route('/')
 def home():
-    return redirect(url_for('login_page'))
+    error_message = session.pop('error_message', None)
+    return render_template('index.html', error=error_message)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def login_page():
@@ -101,6 +106,85 @@ def export_data():
     output.seek(0)
     
     return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', as_attachment=True, download_name='data.xlsx')
+
+@app.route('/uploadData', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        session['error_message'] = 'No file part'
+        return redirect(url_for('home'))
+    
+    file = request.files['file']
+    filename = file.filename
+    file_name_without_ext = os.path.splitext(filename)[0]
+    
+    if file.filename == '':
+        session['error_message'] = 'No selected file'
+        return redirect(url_for('home'))
+    
+    if file and file.filename.endswith('.wav'):
+        file_path = os.path.join('./tmp', filename)
+        file.save(file_path)
+        
+        try:
+            # Preprocess the uploaded audio file
+            preprocessed_data = preprocessAudio(file_path)
+            
+            if preprocessed_data is not None:
+                # Predict using the model
+                # prediction = model.predict(preprocessed_data)
+                # binary_prediction = np.round(prediction).astype(int)
+                binary_prediction = 1
+                
+                # Check the prediction and set the result
+                preds = "abnormal" if binary_prediction == 1 else "normal"
+                
+                # Store the prediction in session and redirect to results page
+                session['prediction'] = preds
+                
+                # Insert into the database
+                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                status = 'SUCCESS'
+                cur = mysql.connection.cursor()
+                query = """
+                    INSERT INTO data (timestamp, fileName, status, result)
+                    VALUES (%s, %s, %s, %s)
+                """
+                cur.execute(query, (timestamp, file_name_without_ext, status, preds))
+                mysql.connection.commit()
+                cur.close()
+                
+                return redirect(url_for('results'))
+            else:
+                session['error_message'] = "Error in Preprocessing Data"
+                session['prediction'] = None
+                return redirect(url_for('home'))
+        finally:
+            # Ensure the temporary file is removed
+            os.remove(file_path)
+    else:
+        session['error_message'] = "Invalid file type, only .wav files are supported"
+        session['prediction'] = None
+        
+        # Insert into the database
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        status = 'ERROR'
+        cur = mysql.connection.cursor()
+        query = """
+            INSERT INTO data (timestamp, fileName, status)
+            VALUES (%s, %s, %s)
+        """
+        cur.execute(query, (timestamp, file_name_without_ext, status))
+        mysql.connection.commit()
+        cur.close()
+        
+        return redirect(url_for('home'))
+
+@app.route('/results')
+def results():
+    prediction = session.pop('prediction', None)
+    if prediction is None:
+        return redirect(url_for('home'))
+    return render_template('results.html', prediction=prediction)
 
 
 if __name__ == '__main__':
