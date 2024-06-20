@@ -1,0 +1,31 @@
+
+1. EDA
+|-- extract_files
+|-- plot_classification_distribution_data
+|-- plot_sum_classification_data
+|-- calculate_duration
+|-- durations_by_class_data
+|-- read_data_labels
+
+2. Preprocessing Data
+|-- read_data_labels
+|-- copy_wav_files
+|-- merge_csv_files
+|-- count_files
+|-- segment_audio
+|-- calculate_duration_stats
+|-- denoising_audio
+|-- visualize_denoising_audio
+|-- normalized_audio
+|-- visualize_normalized_audio
+|-- fft_audio
+|-- visualize_fft_audio
+|-- augment_data
+
+3. Training Base Learner
+|-- count_files
+|-- load_data
+|-- performsBaseModel
+|-- baseModel_LSTM
+|-- baseModel_GRU
+|-- baseModel_TCN	
