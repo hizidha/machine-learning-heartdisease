@@ -321,7 +321,6 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Accuracy</p>
-                                                {% set accuracy = ((tp + tn) / (tp + fp + fn + tn) * 100) | round(2) %}
                                                 <h4 class="card-title">{{ accuracy }}%</h4>
                                             </div>
                                         </div>
@@ -341,7 +340,6 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Precision</p>
-                                                {% set precision = (tp / (tp + fp) * 100) | round(2) %}
                                                 <h4 class="card-title">{{ precision }}%</h4>
                                             </div>
                                         </div>
@@ -361,7 +359,6 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Recall</p>
-                                                {% set recall = ((tp)/(tp+fn) * 100) | round(2)  %}
                                                 <h4 class="card-title">{{ recall }}%</h4>
                                             </div>
                                         </div>
@@ -381,7 +378,6 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">F1-Score</p>
-                                                {% set fscore = 2*((recall*precision)/(recall+precision)) | round(2) %}
                                                 <h4 class="card-title">{{ fscore }}%</h4>
                                             </div>
                                         </div>

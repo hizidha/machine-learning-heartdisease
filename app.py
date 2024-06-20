@@ -118,10 +118,16 @@ def dev_dashboard():
     fn = cur.fetchone()['total_rows']
     
     cur.close()
-    success_message_login = session.pop('success_message_login', None)
     
-    return render_template('developer.html', data=data, total_rows=total_rows, tp=tp, tn=tn,
-                            fp=fp, fn=fn, success=success_message_login)
+    accuracy = round((tp + tn) / (tp + fp + fn + tn) * 100, 2)
+    precision = round(tp / (tp + fp) * 100, 2)
+    recall = round(tp / (tp + fn) * 100, 2)
+    fscore = round(2 * (recall * precision) / (recall + precision), 2)
+    
+    success_message_login = session.pop('success_message_login', None)
+    return render_template('developer.html', data=data, total_rows=total_rows, tp=tp, tn=tn, fp=fp, fn=fn, 
+                        accuracy=accuracy, precision=precision, recall=recall, fscore=fscore,
+                        success=success_message_login)
 
 
 @app.route('/exportData', methods=['GET'])

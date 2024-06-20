@@ -95,7 +95,7 @@ def callMymodel(wav_file_path):
         prediction_gru = model_gru.predict(preprocessed_data)
         prediction_tcn = model_tcn.predict(preprocessed_data)
         
-        weights = [1, 1, 1]
+        weights = [1, 2, 1]
         
         ttl_weight = sum(weights)
         lst_weight = weights[0] / ttl_weight
