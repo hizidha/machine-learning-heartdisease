@@ -7,9 +7,9 @@ from pydub import AudioSegment
 from keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH_LSTM = os.path.join(BASE_DIR, 'lst_10_1.h5')
-MODEL_PATH_GRU = os.path.join(BASE_DIR, 'gru_10_1.h5')
-MODEL_PATH_TCN = os.path.join(BASE_DIR, 'tcn_10_1.h5')
+MODEL_PATH_TCN = os.path.join(BASE_DIR, 'tcn_30_2.keras')
+MODEL_PATH_LSTM = os.path.join(BASE_DIR, 'lst_30_2.keras')
+MODEL_PATH_GRU = os.path.join(BASE_DIR, 'gru_30_2_up.keras')
 
 # Global variables to store the loaded models
 model_lstm = None

@@ -14,7 +14,7 @@ __pycache__/
 *.tmp
 
 # Mengabaikan model (file dengan ekstensi .h5 dalam folder model)
-model/*.h5
+model/*.keras
 
 # Mengabaikan file hasil preprocessing
 data/*.npy
