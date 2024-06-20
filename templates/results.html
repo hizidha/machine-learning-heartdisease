@@ -1,13 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classification Result</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Result | HeartWave</title>
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <!-- Fonts and icons -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid", "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands", "simple-line-icons",
+                ],
+                urls: ["../static/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/plugins.min.css" />
+    <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
+
+    <style>
+        body {
+            background-image: url('../static/img/bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .fixed-logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100px;
+            padding: 16px 0 0 26px;
+        }
+
+        .containers {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 76vh;
+        }
+
+        .card {
+            margin-top: 60px !important;
+            padding: 32px 16px !important;
+        }
+
+        .form-control:focus~label {
+            color: #6861ce !important;
+        }
+
+        .form-control:focus {
+            border-color: #6861ce;
+            box-shadow: 0 0 0 0.1rem #534da7;
+        }
+
+        #icon-user {
+            display: none;
+        }
+
+        #user-text {
+            display: block;
+        }
+
+        .answer {
+            font-size: 24px !important;
+            padding: 14px !important;
+            margin: 24px 0 48px 0 !important;
+        }
+
+        nav {
+            padding: 16px 24px !important;
+        }
+
+        footer {
+            color: black;
+            text-align: right;
+            font-size: 13px;
+            margin-top: 48px;
+            padding: 0 20px;
+            bottom: 0;
+            right: 0;
+        }
+
+        @media screen and (max-width: 576px) {
+            footer {
+                text-align: center;
+                margin-top: 0;
+                padding: 10px;
+            }
+
+            #icon-user {
+                display: block;
+            }
+
+            #user-text {
+                display: none;
+            }
+
+            .fixed-logo {
+                height: 68px;
+                padding: 16px 0 0 24px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Prediction Result</h1>
-    <p>{{ prediction }}</p>
-    <a href="/">Upload another file</a>
+    <div>
+        <img src="../static/img/logo-2.png" class="fixed-logo" alt="logo">
+    </div>
+    <nav>
+        <div class="d-flex justify-content-end">
+            <a href="/dashboard/admin" class="btn btn-secondary" target="_blank">
+                <i class="fa fa-user" id="icon-user"></i>
+                <span id="user-text">Login as Admin</span>
+            </a>
+        </div>
+    </nav>
+    <div class="containers">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body" style="text-align: center;">
+                    <h1>Prediction Result</h1>
+                    {% if prediction == 'NORMAL' %}
+                        <span class="badge badge-success answer">
+                            {{ prediction }}
+                        </span>
+                    {% else %}
+                        <span class="badge badge-danger answer">
+                            {{ prediction }}
+                        </span>
+                    {% endif %}
+                    <!-- <h4>{{ prediction }}</h4> -->
+                    <a href="/" class="btn btn-black" style="width: 100%;">Predict another file</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Copyright © 2024 <b>HeartWave</b>. All rights reserved.
+    </footer>
+
+    <!--   Core JS Files   -->
+    <script src="../static/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/core/popper.min.js"></script>
+    <script src="../static/js/core/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="../static/js/kaiadmin.min.js"></script>
 </body>
+
 </html>

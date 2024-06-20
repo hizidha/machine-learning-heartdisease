@@ -1,29 +1,26 @@
 from flask import Flask, redirect, url_for, request, session, render_template, send_file
 from dotenv import load_dotenv
-from flask_mysqldb import MySQL
+from flask_mysqldb import MySQL # type: ignore
 from datetime import datetime
+import xlsxwriter, io, os
 import pandas as pd
-import io, os
 
 from middleware.users import login_required, add_no_cache_headers, is_logged_in
-from model.models import preprocessAudio
-
+from model.models import callMymodel
 
 load_dotenv()
-
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
 
+app.secret_key = os.getenv('SECRET_KEY')
 # MySQL configurations
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
 mysql = MySQL(app)
 
-
+# Setiap permintaan untuk menambahkan header no-cache
 @app.after_request
 def after_request(response):
     return add_no_cache_headers(response)
@@ -68,12 +65,57 @@ def logout():
 @login_required
 def admin_dashboard():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM data")
+    cur.execute("SELECT * FROM data ORDER BY id DESC")
     data = cur.fetchall()
     cur.close()
     
     success_message_login = session.pop('success_message_login', None)
     return render_template('dashboard.html', data=data, success=success_message_login)
+
+@app.route('/dashboard/dev')
+@login_required
+def dev_dashboard():    
+    cur = mysql.connection.cursor()
+    cur.execute("""
+                SELECT  d.timestamp, d.fileName, d.status, d.result, 
+                        ac.label AS actual_label
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                ORDER BY d.id DESC;""")
+    data = cur.fetchall()
+    
+    cur.execute("SELECT COUNT(*) AS total_rows FROM data")
+    total_rows = cur.fetchone()['total_rows']
+    
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result = 'normal' AND ac.label = 'normal';""")
+    tp = cur.fetchone()['total_rows']
+    
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result = 'abnormal' AND ac.label = 'abnormal';""")
+    tn = cur.fetchone()['total_rows']
+    
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result = 'normal' AND ac.label = 'abnormal';""")
+    fp = cur.fetchone()['total_rows']
+    
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result = 'abnormal' AND ac.label = 'normal';""")
+    fn = cur.fetchone()['total_rows']
+    
+    cur.close()
+    success_message_login = session.pop('success_message_login', None)
+    
+    return render_template('developer.html', data=data, total_rows=total_rows, tp=tp, tn=tn,
+                            fp=fp, fn=fn, success=success_message_login)
+
 
 @app.route('/exportData', methods=['GET'])
 @login_required
@@ -85,10 +127,7 @@ def export_data():
         return "Start date and end date are required", 400
     
     # Query to fetch data within the date range
-    query = """
-    SELECT * FROM data
-    WHERE timestamp BETWEEN %s AND %s
-    """
+    query = """ SELECT * FROM data WHERE timestamp BETWEEN %s AND %s """
     
     cur = mysql.connection.cursor()
     cur.execute(query, (start_date + ' 00:00:00', end_date + ' 23:59:59'))
@@ -102,10 +141,11 @@ def export_data():
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, sheet_name='Sheet1', index=False)
-    
     output.seek(0)
     
-    return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', as_attachment=True, download_name='data.xlsx')
+    return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
+                    as_attachment=True, download_name='filtered_data.xlsx')
+
 
 @app.route('/uploadData', methods=['POST'])
 def upload_file():
@@ -122,34 +162,35 @@ def upload_file():
         return redirect(url_for('home'))
     
     if file and file.filename.endswith('.wav'):
-        file_path = os.path.join('./tmp', filename)
+        file_path = os.path.join('./data', filename)
         file.save(file_path)
         
         try:
-            # Preprocess the uploaded audio file
-            preprocessed_data = preprocessAudio(file_path)
+            preds = callMymodel(file_path)
             
-            if preprocessed_data is not None:
-                # Predict using the model
-                # prediction = model.predict(preprocessed_data)
-                # binary_prediction = np.round(prediction).astype(int)
-                binary_prediction = 1
-                
-                # Check the prediction and set the result
-                preds = "abnormal" if binary_prediction == 1 else "normal"
-                
-                # Store the prediction in session and redirect to results page
+            if preds is not None:
                 session['prediction'] = preds
                 
-                # Insert into the database
+                # Get the actuallabel_id from the actuallabel table
+                cur = mysql.connection.cursor()
+                query = "SELECT id FROM actuallabel WHERE fileName = %s"
+                cur.execute(query, (file_name_without_ext,))
+                result = cur.fetchone()
+                
+                if result:
+                    actuallabel_id = result['id']
+                else:
+                    actuallabel_id = 0
+                
+                # Insert into the data table
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 status = 'SUCCESS'
-                cur = mysql.connection.cursor()
+                
                 query = """
-                    INSERT INTO data (timestamp, fileName, status, result)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO data (timestamp, fileName, status, result, id_actualLabel)
+                    VALUES (%s, %s, %s, %s, %s)
                 """
-                cur.execute(query, (timestamp, file_name_without_ext, status, preds))
+                cur.execute(query, (timestamp, file_name_without_ext, status, preds, actuallabel_id))
                 mysql.connection.commit()
                 cur.close()
                 
@@ -160,31 +201,33 @@ def upload_file():
                 return redirect(url_for('home'))
         finally:
             # Ensure the temporary file is removed
-            os.remove(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
     else:
-        session['error_message'] = "Invalid file type, only .wav files are supported"
+        session['error_message'] = "Invalid file type, only .wav files are supported."
         session['prediction'] = None
         
         # Insert into the database
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         status = 'ERROR'
+        
         cur = mysql.connection.cursor()
-        query = """
-            INSERT INTO data (timestamp, fileName, status)
-            VALUES (%s, %s, %s)
-        """
+        query = """ INSERT INTO data (timestamp, fileName, status) VALUES (%s, %s, %s) """
         cur.execute(query, (timestamp, file_name_without_ext, status))
         mysql.connection.commit()
         cur.close()
         
         return redirect(url_for('home'))
 
+
 @app.route('/results')
 def results():
     prediction = session.pop('prediction', None)
     if prediction is None:
         return redirect(url_for('home'))
-    return render_template('results.html', prediction=prediction)
+    
+    prediction_upper = prediction.upper()
+    return render_template('results.html', prediction=prediction_upper)
 
 
 if __name__ == '__main__':

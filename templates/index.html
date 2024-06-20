@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>HeartWave</title>
+    <title>Home | HeartWave</title>
     <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <!-- Fonts and icons -->
@@ -32,9 +32,21 @@
     <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
 
     <style>
-        #dropzoneText {
-            padding: 0;
+        body {
+            background-image: url('../static/img/bg-main.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
             margin: 0;
+        }
+
+        .fixed-logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100px;
+            padding: 16px 0 0 26px;
         }
 
         .containers {
@@ -64,6 +76,11 @@
 
         #user-text {
             display: block;
+        }
+
+        #dropzoneText {
+            padding: 0;
+            margin: 0;
         }
 
         .dropzone {
@@ -98,6 +115,7 @@
         }
 
         footer {
+            color: black;
             text-align: right;
             font-size: 13px;
             margin-top: 48px;
@@ -120,15 +138,22 @@
             #user-text {
                 display: none;
             }
+
+            .fixed-logo {
+                height: 68px;
+                padding: 16px 0 0 24px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div>
+        <img src="../static/img/logo-2.png" class="fixed-logo" alt="logo">
+    </div>
     <nav>
-        <div class="d-flex justify-content-between">
-            <img src="../static/img/logo-2.png" alt="logo" height="40px">
-            <a href="/dashboard/admin" class="btn btn-secondary">
+        <div class="d-flex justify-content-end">
+            <a href="/dashboard/admin" class="btn btn-secondary" target="_blank">
                 <i class="fa fa-user" id="icon-user"></i>
                 <span id="user-text">Login as Admin</span>
             </a>
@@ -147,7 +172,7 @@
                         </div>
                         <input style="display: none;" type="file" name="file" id="fileInput" required>
                         <button id="btn-gets" type="submit" style="width: 100%;" class="btn btn-black mt-4">Get
-                            Classification</button>
+                            Prediction</button>
                     </form>
                 </div>
             </div>

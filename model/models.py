@@ -4,6 +4,26 @@ import noisereduce as nr
 from scipy.io import wavfile
 from datetime import datetime
 from pydub import AudioSegment
+from keras.models import load_model
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH_LSTM = os.path.join(BASE_DIR, 'lst_10_1.h5')
+MODEL_PATH_GRU = os.path.join(BASE_DIR, 'gru_10_1.h5')
+MODEL_PATH_TCN = os.path.join(BASE_DIR, 'tcn_10_1.h5')
+
+# Global variables to store the loaded models
+model_lstm = None
+model_gru = None
+model_tcn = None
+
+def load_models():
+    global model_lstm, model_gru, model_tcn
+    model_lstm = load_model(MODEL_PATH_LSTM)
+    model_gru = load_model(MODEL_PATH_GRU)
+    model_tcn = load_model(MODEL_PATH_TCN)
+
+# Call the function to load the models
+load_models()
 
 def preprocessAudio(wav_file_path):
     SEGMENT_LENGTH_MS = 15000  # 15 seconds
@@ -61,4 +81,35 @@ def preprocessAudio(wav_file_path):
         if os.path.exists(TEMP_SEGMENTED_PATH):
             os.remove(TEMP_SEGMENTED_PATH)
 
+    return None
+
+def callMymodel(wav_file_path):
+    preprocessed_data = preprocessAudio(wav_file_path)
+    
+    if preprocessed_data is not None:
+        # Load the models
+        global model_lstm, model_gru, model_tcn
+        
+        # Predict using the models
+        prediction_lstm = model_lstm.predict(preprocessed_data)
+        prediction_gru = model_gru.predict(preprocessed_data)
+        prediction_tcn = model_tcn.predict(preprocessed_data)
+        
+        weights = [1, 1, 1]
+        
+        ttl_weight = sum(weights)
+        lst_weight = weights[0] / ttl_weight
+        gru_weight = weights[1] / ttl_weight
+        tcn_weight = weights[2] / ttl_weight
+        
+        ensemble_pred = (prediction_lstm * lst_weight + 
+                         prediction_gru * gru_weight + 
+                         prediction_tcn * tcn_weight)
+    
+        y_pred = (ensemble_pred > 0.5).astype(int)
+        
+        # Determine the prediction result
+        preds = "abnormal" if y_pred[0] == 1 else "normal"
+        return preds
+    
     return None

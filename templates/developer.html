@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Dashboard | HeartWave</title>
+    <title>Development | HeartWave</title>
     <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <!-- Fonts and icons -->
@@ -78,13 +78,13 @@
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a href="/dashboard/admin" style="margin: 0 !important; padding: 10px 20px !important;">
                                 <i class="fas fa-clock"></i>
                                 <p style="padding-top: 4px !important;">Activity Log</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a href="/dashboard/dev" style="margin: 0 !important; padding: 10px 20px !important;">
                                 <i class="fas fa-cogs"></i>
                                 <p style="padding-top: 4px !important;">Development</p>
@@ -179,8 +179,133 @@
                 <div class="page-inner">
                     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                         <div>
-                            <h3 class="fw-bold">Activity Log</h3>
+                            <h3 class="fw-bold">Dashboard for Development</h3>
                             <h6 class="op-7 mb-3" id="days"></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                                <i class="fas fa-file-contract"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Total Model Predicted</p>
+                                                <h4 class="card-title">{{ total_rows }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            True Positive
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel data 'normal' dan diprediksi 'normal'."
+                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ tp }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            True Negative
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel data 'abnormal' dan diprediksi 'abnormal'."
+                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ tn }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            False Positive
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel yang sebenarnya 'abnormal' dan diprediksi 'normal'."
+                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ fp }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            False Negative
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel yang sebenarnya 'normal' dan diprediksi 'abnormal'."
+                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ fn }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -212,6 +337,7 @@
                                                     <th>Uploaded File Name (.wav)</th>
                                                     <th>Status</th>
                                                     <th>Result</th>
+                                                    <th>Actual Label</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -228,6 +354,7 @@
                                                         {% endif %}
                                                     </td>
                                                     <td>{{ row.result }}</td>
+                                                    <td>{{ row.actual_label }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -309,6 +436,11 @@
 
     <script>
         $(document).ready(function () {
+            $('[data-toggle="popover"]').popover({
+                placement: 'top',
+                trigger: 'hover'
+            });
+
             $("#basic-datatables").DataTable();
             $("#export-to-excel").click(function () {
                 var startDate = $("#start").val();
