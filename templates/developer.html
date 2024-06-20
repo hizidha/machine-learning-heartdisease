@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                             <div class="card card-stats card-round">
                                 <div class="card-body ">
                                     <div class="row align-items-center">
@@ -219,7 +219,7 @@
                                                             data-bs-trigger="hover" data-bs-toggle="popover"
                                                             data-bs-placement="top"
                                                             data-bs-content="Sampel data 'normal' dan diprediksi 'normal'."
-                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
                                                 <h4 class="card-title">{{ tp }}</h4>
@@ -245,7 +245,7 @@
                                                             data-bs-trigger="hover" data-bs-toggle="popover"
                                                             data-bs-placement="top"
                                                             data-bs-content="Sampel data 'abnormal' dan diprediksi 'abnormal'."
-                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
                                                 <h4 class="card-title">{{ tn }}</h4>
@@ -271,7 +271,7 @@
                                                             data-bs-trigger="hover" data-bs-toggle="popover"
                                                             data-bs-placement="top"
                                                             data-bs-content="Sampel yang sebenarnya 'abnormal' dan diprediksi 'normal'."
-                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
                                                 <h4 class="card-title">{{ fp }}</h4>
@@ -297,10 +297,92 @@
                                                             data-bs-trigger="hover" data-bs-toggle="popover"
                                                             data-bs-placement="top"
                                                             data-bs-content="Sampel yang sebenarnya 'normal' dan diprediksi 'abnormal'."
-                                                            style="margin-bottom: 12px !important; font-size: 10px !important;"></i>
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
                                                 <h4 class="card-title">{{ fn }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Accuracy</p>
+                                                {% set accuracy = (tp + tn) / (tp + fp + fn + tn) * 100 %}
+                                                <h4 class="card-title">{{ accuracy }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                                <i class="fas fa-bullseye"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Precision</p>
+                                                {% set precision = (tp / (tp + fp) * 100) | round(2) %}
+                                                <h4 class="card-title">{{ precision }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-black bubble-shadow-small">
+                                                <i class="fas fa-redo-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Recall</p>
+                                                {% set recall = ((tp)/(tp+fn) * 100) | round(2)  %}
+                                                <h4 class="card-title">{{ recall }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                                <i class="fas fa-balance-scale"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">F1-Score</p>
+                                                {% set fscore = 2*((recall*precision)/(recall+precision)) | round(2) %}
+                                                <h4 class="card-title">{{ fscore }}%</h4>
                                             </div>
                                         </div>
                                     </div>
