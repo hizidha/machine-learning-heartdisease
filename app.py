@@ -25,6 +25,10 @@ mysql = MySQL(app)
 def after_request(response):
     return add_no_cache_headers(response)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html'), 404
+
 @app.route('/')
 def home():
     error_message = session.pop('error_message', None)
@@ -83,31 +87,34 @@ def dev_dashboard():
                 ORDER BY d.id DESC;""")
     data = cur.fetchall()
     
-    cur.execute("SELECT COUNT(*) AS total_rows FROM data")
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data 
+                WHERE status = 'SUCCESS' AND id_actualLabel != 3241""")
     total_rows = cur.fetchone()['total_rows']
     
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'normal' AND ac.label = 'normal';""")
+                WHERE d.result = 'normal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
     tp = cur.fetchone()['total_rows']
     
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'abnormal' AND ac.label = 'abnormal';""")
+                WHERE d.result = 'abnormal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
     tn = cur.fetchone()['total_rows']
     
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'normal' AND ac.label = 'abnormal';""")
+                WHERE d.result = 'normal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
     fp = cur.fetchone()['total_rows']
     
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'abnormal' AND ac.label = 'normal';""")
+                WHERE d.result = 'abnormal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
     fn = cur.fetchone()['total_rows']
     
     cur.close()
@@ -171,6 +178,11 @@ def upload_file():
             if preds is not None:
                 session['prediction'] = preds
                 
+                # Insert into the data table
+                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                status = 'SUCCESS'
+                actuallabel_id = None
+                
                 # Get the actuallabel_id from the actuallabel table
                 cur = mysql.connection.cursor()
                 query = "SELECT id FROM actuallabel WHERE fileName = %s"
@@ -179,18 +191,18 @@ def upload_file():
                 
                 if result:
                     actuallabel_id = result['id']
+                    query = """
+                        INSERT INTO data (timestamp, fileName, status, result, id_actualLabel)
+                        VALUES (%s, %s, %s, %s, %s)
+                    """
+                    cur.execute(query, (timestamp, file_name_without_ext, status, preds, actuallabel_id))
                 else:
-                    actuallabel_id = 0
+                    query = """
+                        INSERT INTO data (timestamp, fileName, status, result)
+                        VALUES (%s, %s, %s, %s)
+                    """
+                    cur.execute(query, (timestamp, file_name_without_ext, status, preds))
                 
-                # Insert into the data table
-                timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                status = 'SUCCESS'
-                
-                query = """
-                    INSERT INTO data (timestamp, fileName, status, result, id_actualLabel)
-                    VALUES (%s, %s, %s, %s, %s)
-                """
-                cur.execute(query, (timestamp, file_name_without_ext, status, preds, actuallabel_id))
                 mysql.connection.commit()
                 cur.close()
                 
