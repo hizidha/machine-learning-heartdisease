@@ -231,7 +231,7 @@ def upload_file():
         
         cur = mysql.connection.cursor()
         query = """ INSERT INTO data (timestamp, fileName, status) VALUES (%s, %s, %s) """
-        cur.execute(query, (timestamp, file_name_without_ext, status))
+        cur.execute(query, (timestamp, filename, status))
         mysql.connection.commit()
         cur.close()
         
