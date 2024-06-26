@@ -183,7 +183,10 @@
                             <h6 class="op-7 mb-3" id="days"></h6>
                         </div>
                     </div>
+
+                    <!-- Base Model -->
                     <div class="row">
+                        <h5 class="fw-bold">Base Model (Gated Recurrent Unit)</h5>
                         <div class="col-sm-6 col-md-4">
                             <div class="card card-stats card-round">
                                 <div class="card-body ">
@@ -212,7 +215,8 @@
                                                 <div class="dflex row">
                                                     <div class="card-category"
                                                         style="display: flex; align-items: center;">
-                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
                                                             True Positive
                                                         </p>
                                                         <i class="fas fa-question-circle" data-bs-container="body"
@@ -222,7 +226,7 @@
                                                             style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
-                                                <h4 class="card-title">{{ tp }}</h4>
+                                                <h4 class="card-title">{{ tp_1 }}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +242,8 @@
                                                 <div class="dflex row">
                                                     <div class="card-category"
                                                         style="display: flex; align-items: center;">
-                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
                                                             True Negative
                                                         </p>
                                                         <i class="fas fa-question-circle" data-bs-container="body"
@@ -248,7 +253,7 @@
                                                             style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
-                                                <h4 class="card-title">{{ tn }}</h4>
+                                                <h4 class="card-title">{{ tn_1 }}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -264,7 +269,8 @@
                                                 <div class="dflex row">
                                                     <div class="card-category"
                                                         style="display: flex; align-items: center;">
-                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
                                                             False Positive
                                                         </p>
                                                         <i class="fas fa-question-circle" data-bs-container="body"
@@ -274,7 +280,7 @@
                                                             style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
-                                                <h4 class="card-title">{{ fp }}</h4>
+                                                <h4 class="card-title">{{ fp_1 }}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +296,8 @@
                                                 <div class="dflex row">
                                                     <div class="card-category"
                                                         style="display: flex; align-items: center;">
-                                                        <p style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
                                                             False Negative
                                                         </p>
                                                         <i class="fas fa-question-circle" data-bs-container="body"
@@ -300,7 +307,7 @@
                                                             style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
                                                     </div>
                                                 </div>
-                                                <h4 class="card-title">{{ fn }}</h4>
+                                                <h4 class="card-title">{{ fn_1 }}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -308,6 +315,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Metrik perhitungan Base Model -->
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <div class="card card-stats card-round">
@@ -321,7 +330,7 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Accuracy</p>
-                                                <h4 class="card-title">{{ accuracy }}%</h4>
+                                                <h4 class="card-title">{{ accuracy_base }}%</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -340,7 +349,7 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Precision</p>
-                                                <h4 class="card-title">{{ precision }}%</h4>
+                                                <h4 class="card-title">{{ precision_base }}%</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -359,7 +368,7 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">Recall</p>
-                                                <h4 class="card-title">{{ recall }}%</h4>
+                                                <h4 class="card-title">{{ recall_base }}%</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -378,7 +387,7 @@
                                         <div class="col col-stats ms-3 ms-sm-0">
                                             <div class="numbers">
                                                 <p class="card-category">F1-Score</p>
-                                                <h4 class="card-title">{{ fscore }}%</h4>
+                                                <h4 class="card-title">{{ fscore_base }}%</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -386,9 +395,223 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Ensemble Model -->
+                    <div class="row" style="margin-top: 10px;">
+                        <h5 class="fw-bold">Ensemble Model</h5>
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                                <i class="fas fa-file-contract"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Total Predicted (SUCCESS)</p>
+                                                <h4 class="card-title">{{ total_rows }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            True Positive
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel data 'normal' dan diprediksi 'normal'."
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ tp_2 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            True Negative
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel data 'abnormal' dan diprediksi 'abnormal'."
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ tn_2 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            False Positive
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel yang sebenarnya 'abnormal' dan diprediksi 'normal'."
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ fp_2 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <div class="card card-stats card-round">
+                                <div class="card-body" style="padding: 19px !important;">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <div class="dflex row">
+                                                    <div class="card-category"
+                                                        style="display: flex; align-items: center;">
+                                                        <p
+                                                            style="margin: 0; padding: 0; padding-right: 1px; font-size: 14px;">
+                                                            False Negative
+                                                        </p>
+                                                        <i class="fas fa-question-circle" data-bs-container="body"
+                                                            data-bs-trigger="hover" data-bs-toggle="popover"
+                                                            data-bs-placement="top"
+                                                            data-bs-content="Sampel yang sebenarnya 'normal' dan diprediksi 'abnormal'."
+                                                            style="margin-bottom: 10px !important; font-size: 10px !important;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title">{{ fn_2 }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metrik perhitungan Ensemble Model -->
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-info bubble-shadow-small">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Accuracy</p>
+                                                <h4 class="card-title">{{ accuracy_ensemble }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                                <i class="fas fa-bullseye"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Precision</p>
+                                                <h4 class="card-title">{{ precision_ensemble }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-black bubble-shadow-small">
+                                                <i class="fas fa-redo-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">Recall</p>
+                                                <h4 class="card-title">{{ recall_ensemble }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="card card-stats card-round">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-icon">
+                                            <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                                <i class="fas fa-balance-scale"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col col-stats ms-3 ms-sm-0">
+                                            <div class="numbers">
+                                                <p class="card-category">F1-Score</p>
+                                                <h4 class="card-title">{{ fscore_ensemble }}%</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Table -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card">
+                            <div class="card" style="margin-top: 10px;">
                                 <div class="card-header">
                                     <div class="d-flex justify-content-between">
                                         <div class="card-title">
@@ -414,7 +637,8 @@
                                                     <th>Timestamps</th>
                                                     <th>Uploaded File Name (.wav)</th>
                                                     <th>Status</th>
-                                                    <th>Result</th>
+                                                    <th>Result Base Model</th>
+                                                    <th>Result Ensemble Model</th>
                                                     <th>Actual Label</th>
                                                 </tr>
                                             </thead>
@@ -431,7 +655,8 @@
                                                         <span class="badge badge-danger">{{ row.status }}</span>
                                                         {% endif %}
                                                     </td>
-                                                    <td>{{ row.result }}</td>
+                                                    <td>{{ row.result_base }}</td>
+                                                    <td>{{ row.result_ensemble }}</td>
                                                     <td>{{ row.actual_label }}</td>
                                                 </tr>
                                                 {% endfor %}

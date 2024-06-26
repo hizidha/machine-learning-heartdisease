@@ -1,12 +1,12 @@
 from flask import Flask, redirect, url_for, request, session, render_template, send_file
-from dotenv import load_dotenv
 from flask_mysqldb import MySQL # type: ignore
+from dotenv import load_dotenv
 from datetime import datetime
 import xlsxwriter, io, os
 import pandas as pd
 
-from middleware.users import login_required, add_no_cache_headers, is_logged_in
-from model.models import callMymodel
+from middleware import login_required, add_no_cache_headers, is_logged_in
+from model import callMymodel
 
 load_dotenv()
 app = Flask(__name__)
@@ -78,10 +78,10 @@ def admin_dashboard():
 
 @app.route('/dashboard/dev')
 @login_required
-def dev_dashboard():    
+def dev_dashboard():
     cur = mysql.connection.cursor()
     cur.execute("""
-                SELECT  d.timestamp, d.fileName, d.status, d.result, 
+                SELECT  d.timestamp, d.fileName, d.status, d.result_base, d.result_ensemble,
                         ac.label AS actual_label
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
                 ORDER BY d.id DESC;""")
@@ -93,40 +93,100 @@ def dev_dashboard():
                 WHERE status = 'SUCCESS' AND id_actualLabel != 3241""")
     total_rows = cur.fetchone()['total_rows']
     
+    # Base Learner
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'normal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
-    tp = cur.fetchone()['total_rows']
-    
+                WHERE d.result_base = 'normal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
+    tp_base = cur.fetchone()['total_rows']
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'abnormal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
-    tn = cur.fetchone()['total_rows']
-    
+                WHERE d.result_base = 'abnormal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
+    tn_base = cur.fetchone()['total_rows']
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'normal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
-    fp = cur.fetchone()['total_rows']
-    
+                WHERE d.result_base = 'normal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
+    fp_base = cur.fetchone()['total_rows']
     cur.execute("""
                 SELECT COUNT(*) AS total_rows 
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
-                WHERE d.result = 'abnormal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
-    fn = cur.fetchone()['total_rows']
+                WHERE d.result_base = 'abnormal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
+    fn_base = cur.fetchone()['total_rows']
+
+    # Base Learner
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result_ensemble = 'normal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
+    tp_ensemble = cur.fetchone()['total_rows']
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result_ensemble = 'abnormal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
+    tn_ensemble = cur.fetchone()['total_rows']
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result_ensemble = 'normal' AND ac.label = 'abnormal' AND d.status = 'SUCCESS';""")
+    fp_ensemble = cur.fetchone()['total_rows']
+    cur.execute("""
+                SELECT COUNT(*) AS total_rows 
+                FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.result_ensemble = 'abnormal' AND ac.label = 'normal' AND d.status = 'SUCCESS';""")
+    fn_ensemble = cur.fetchone()['total_rows']
     
     cur.close()
     
-    accuracy = round((tp + tn) / (tp + fp + fn + tn) * 100, 2)
-    precision = round(tp / (tp + fp) * 100, 2)
-    recall = round(tp / (tp + fn) * 100, 2)
-    fscore = round(2 * (recall * precision) / (recall + precision), 2)
+    # Hitung metrik evaluasi model untuk model base
+    if (tp_base + fp_base + fn_base + tn_base) != 0:
+        accuracy_1 = round((tp_base + tn_base) / (tp_base + fp_base + fn_base + tn_base) * 100, 2)
+    else:
+        accuracy_1 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (tp_base + fp_base) != 0:
+        precision_1 = round(tp_base / (tp_base + fp_base) * 100, 2)
+    else:
+        precision_1 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (tp_base + fn_base) != 0:
+        recall_1 = round(tp_base / (tp_base + fn_base) * 100, 2)
+    else:
+        recall_1 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (recall_1 + precision_1) != 0:
+        fscore_1 = round(2 * (recall_1 * precision_1) / (recall_1 + precision_1), 2)
+    else:
+        fscore_1 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    # Hitung metrik evaluasi model untuk ensemble model
+    if (tp_ensemble + fp_ensemble + fn_ensemble + tn_ensemble) != 0:
+        accuracy_2 = round((tp_ensemble + tn_ensemble) / (tp_ensemble + fp_ensemble + fn_ensemble + tn_ensemble) * 100, 2)
+    else:
+        accuracy_2 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (tp_ensemble + fp_ensemble) != 0:
+        precision_2 = round(tp_ensemble / (tp_ensemble + fp_ensemble) * 100, 2)
+    else:
+        precision_2 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (tp_ensemble + fn_ensemble) != 0:
+        recall_2 = round(tp_ensemble / (tp_ensemble + fn_ensemble) * 100, 2)
+    else:
+        recall_2 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
+
+    if (recall_2 + precision_2) != 0:
+        fscore_2 = round(2 * (recall_2 * precision_2) / (recall_2 + precision_2), 2)
+    else:
+        fscore_2 = 0.0  # Atau nilai default lainnya jika dianggap sesuai
     
     success_message_login = session.pop('success_message_login', None)
-    return render_template('developer.html', data=data, total_rows=total_rows, tp=tp, tn=tn, fp=fp, fn=fn, 
-                        accuracy=accuracy, precision=precision, recall=recall, fscore=fscore,
+    return render_template('developer.html', data=data, total_rows=total_rows, 
+                        tp_1=tp_base, tn_1=tn_base, fp_1=fp_base, fn_1=fn_base, 
+                        accuracy_base=accuracy_1, precision_base=precision_1, recall_base=recall_1, fscore_base=fscore_1,
+                        tp_2=tp_ensemble, tn_2=tn_ensemble, fp_2=fp_ensemble, fn_2=fn_ensemble, 
+                        accuracy_ensemble=accuracy_2, precision_ensemble=precision_2, recall_ensemble=recall_2, fscore_ensemble=fscore_2,
                         success=success_message_login)
 
 
@@ -179,10 +239,11 @@ def upload_file():
         file.save(file_path)
         
         try:
-            preds = callMymodel(file_path)
+            preds_base, preds_ensemble = callMymodel(file_path)
             
-            if preds is not None:
-                session['prediction'] = preds
+            if preds_base is not None:
+                session['prediction_base'] = preds_base
+                session['prediction_ensemble'] = preds_ensemble
                 
                 # Insert into the data table
                 timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -198,16 +259,16 @@ def upload_file():
                 if result:
                     actuallabel_id = result['id']
                     query = """
-                        INSERT INTO data (timestamp, fileName, status, result, id_actualLabel)
-                        VALUES (%s, %s, %s, %s, %s)
+                        INSERT INTO data (timestamp, fileName, status, result_base, result_ensemble, id_actualLabel)
+                        VALUES (%s, %s, %s, %s, %s, %s)
                     """
-                    cur.execute(query, (timestamp, file_name_without_ext, status, preds, actuallabel_id))
+                    cur.execute(query, (timestamp, file_name_without_ext, status, preds_base, preds_ensemble, actuallabel_id))
                 else:
                     query = """
-                        INSERT INTO data (timestamp, fileName, status, result)
-                        VALUES (%s, %s, %s, %s)
+                        INSERT INTO data (timestamp, fileName, status, result_base, result_ensemble)
+                        VALUES (%s, %s, %s, %s, %s)
                     """
-                    cur.execute(query, (timestamp, file_name_without_ext, status, preds))
+                    cur.execute(query, (timestamp, file_name_without_ext, status, preds_base, preds_ensemble))
                 
                 mysql.connection.commit()
                 cur.close()
@@ -215,7 +276,8 @@ def upload_file():
                 return redirect(url_for('results'))
             else:
                 session['error_message'] = "Error in Preprocessing Data"
-                session['prediction'] = None
+                session['prediction_base'] = None
+                session['prediction_ensemble'] = None
                 return redirect(url_for('home'))
         finally:
             # Ensure the temporary file is removed
@@ -223,7 +285,8 @@ def upload_file():
                 os.remove(file_path)
     else:
         session['error_message'] = "Invalid file type, only .wav files are supported."
-        session['prediction'] = None
+        session['prediction_base'] = None
+        session['prediction_ensemble'] = None
         
         # Insert into the database
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -240,12 +303,14 @@ def upload_file():
 
 @app.route('/results')
 def results():
-    prediction = session.pop('prediction', None)
-    if prediction is None:
+    prediction_1 = session.pop('prediction_base', None)
+    prediction_2 = session.pop('prediction_ensemble', None)
+    if prediction_1 is None:
         return redirect(url_for('home'))
     
-    prediction_upper = prediction.upper()
-    return render_template('results.html', prediction=prediction_upper)
+    prediction_upper_1 = prediction_1.upper()
+    prediction_upper_2 = prediction_2.upper()
+    return render_template('results.html', prediction_base=prediction_upper_1, prediction_ensemble=prediction_upper_2)
 
 
 if __name__ == '__main__':

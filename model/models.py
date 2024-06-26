@@ -10,14 +10,17 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH_TCN = os.path.join(BASE_DIR, 'tcn_30_2.keras')
 MODEL_PATH_LSTM = os.path.join(BASE_DIR, 'lst_30_2.keras')
 MODEL_PATH_GRU = os.path.join(BASE_DIR, 'gru_30_2_up.keras')
+MODEL_PATH_BASE = os.path.join(BASE_DIR, 'gru_20_2_up.keras')
 
 # Global variables to store the loaded models
+model_base = None
 model_lstm = None
 model_gru = None
 model_tcn = None
 
 def load_models():
-    global model_lstm, model_gru, model_tcn
+    global model_lstm, model_gru, model_tcn, model_base
+    model_base = load_model(MODEL_PATH_BASE)
     model_lstm = load_model(MODEL_PATH_LSTM)
     model_gru = load_model(MODEL_PATH_GRU)
     model_tcn = load_model(MODEL_PATH_TCN)
@@ -88,9 +91,11 @@ def callMymodel(wav_file_path):
     
     if preprocessed_data is not None:
         # Load the models
-        global model_lstm, model_gru, model_tcn
+        global model_lstm, model_gru, model_tcn, model_base
         
         # Predict using the models
+        prediction_base = model_base.predict(preprocessed_data)
+        
         prediction_lstm = model_lstm.predict(preprocessed_data)
         prediction_gru = model_gru.predict(preprocessed_data)
         prediction_tcn = model_tcn.predict(preprocessed_data)
@@ -102,14 +107,17 @@ def callMymodel(wav_file_path):
         gru_weight = weights[1] / ttl_weight
         tcn_weight = weights[2] / ttl_weight
         
-        ensemble_pred = (prediction_lstm * lst_weight + 
-                         prediction_gru * gru_weight + 
-                         prediction_tcn * tcn_weight)
+        ensemble_pred = ((prediction_lstm * lst_weight) + 
+                        (prediction_gru * gru_weight) + 
+                        (prediction_tcn * tcn_weight))
     
-        y_pred = (ensemble_pred > 0.5).astype(int)
+        y_pred_base = (prediction_base).astype(int)
+        y_pred_ensemble = (ensemble_pred > 0.5).astype(int)
         
         # Determine the prediction result
-        preds = "abnormal" if y_pred[0] == 1 else "normal"
-        return preds
+        preds_base = "abnormal" if y_pred_base[0] == 1 else "normal"
+        pred_ensemble = "abnormal" if y_pred_ensemble[0] == 1 else "normal"
+        
+        return preds_base, pred_ensemble
     
     return None

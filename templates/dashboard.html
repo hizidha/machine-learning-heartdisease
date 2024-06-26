@@ -211,7 +211,8 @@
                                                     <th>Timestamps</th>
                                                     <th>Uploaded File Name (.wav)</th>
                                                     <th>Status</th>
-                                                    <th>Result</th>
+                                                    <th>Result Base Model</th>
+                                                    <th>Result Ensemble Model</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -227,7 +228,8 @@
                                                         <span class="badge badge-danger">{{ row.status }}</span>
                                                         {% endif %}
                                                     </td>
-                                                    <td>{{ row.result }}</td>
+                                                    <td>{{ row.result_base }}</td>
+                                                    <td>{{ row.result_ensemble }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>

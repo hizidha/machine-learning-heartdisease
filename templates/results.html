@@ -81,7 +81,7 @@
         .answer {
             font-size: 24px !important;
             padding: 14px !important;
-            margin: 24px 0 48px 0 !important;
+            margin: 8px 0 36px 0 !important;
         }
 
         nav {
@@ -137,17 +137,28 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body" style="text-align: center;">
-                    <h1>Prediction Result</h1>
-                    {% if prediction == 'NORMAL' %}
+                    <h1 style="margin-bottom: 24px;">Prediction Result</h1>
+                    <h4>Gated Recurrent Unit Model</h4>
+                    {% if prediction_base == 'NORMAL' %}
                         <span class="badge badge-success answer">
-                            {{ prediction }}
+                            {{ prediction_base }}
                         </span>
                     {% else %}
                         <span class="badge badge-danger answer">
-                            {{ prediction }}
+                            {{ prediction_base }}
                         </span>
                     {% endif %}
-                    <!-- <h4>{{ prediction }}</h4> -->
+                    <br>
+                    <h4>Ensemble Model</h4>
+                    {% if prediction_ensemble == 'NORMAL' %}
+                        <span class="badge badge-success answer">
+                            {{ prediction_ensemble }}
+                        </span>
+                    {% else %}
+                        <span class="badge badge-danger answer">
+                            {{ prediction_ensemble }}
+                        </span>
+                    {% endif %}
                     <a href="/" class="btn btn-black" style="width: 100%;">Predict another file</a>
                 </div>
             </div>
