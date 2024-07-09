@@ -1,20 +1,23 @@
-# Mengabaikan folder capstone
+# Exclude the capstone directory
 capstone/
 
-# Mengabaikan folder pycache
+# Exclude the .vscode directory, which contains Visual Studio Code configuration files
+.vscode/
+
+# Exclude the __pycache__ directory, which contains Python bytecode files
 __pycache__/
 
-# Mengabaikan file log
+# Exclude all files with a .log extension, which are usually log files
 *.log
 
-# Mengabaikan file build output
-/build/
-
-# Mengabaikan file temporer
+# Exclude all files with a .tmp extension, which are usually temporary files
 *.tmp
 
-# Mengabaikan model (file dengan ekstensi .h5 dalam folder model)
+# Exclude all files with a .keras extension inside the model directory, which are Keras model files
 model/*.keras
 
-# Mengabaikan file hasil preprocessing
+# Exclude all files with a .npy extension inside the data directory, which are NumPy array files
 data/*.npy
+
+# Exclude all files with a .sql extension, which are usually SQL scripts or database files
+*.sql
