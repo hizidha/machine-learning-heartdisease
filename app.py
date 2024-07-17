@@ -81,7 +81,7 @@ def admin_dashboard():
 def dev_dashboard():
     cur = mysql.connection.cursor()
     cur.execute("""
-                SELECT  d.timestamp, d.fileName, d.status, d.result_base, d.result_ensemble,
+                SELECT  d.timestamp, d.file_name, d.status, d.result_base, d.result_ensemble,
                         ac.label AS actual_label
                 FROM data d LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
                 ORDER BY d.id DESC;""")
@@ -200,7 +200,10 @@ def export_data():
         return "Start date and end date are required", 400
     
     # Query to fetch data within the date range
-    query = """ SELECT * FROM data WHERE timestamp BETWEEN %s AND %s """
+    query = """ SELECT d.timestamp, d.file_name, d.status, d.result_base, d.result_ensemble, ac.label AS actual_label
+                FROM data d
+                LEFT JOIN actuallabel ac ON d.id_actualLabel = ac.id
+                WHERE d.timestamp BETWEEN %s AND %s; """
     
     cur = mysql.connection.cursor()
     cur.execute(query, (start_date + ' 00:00:00', end_date + ' 23:59:59'))
@@ -208,7 +211,10 @@ def export_data():
     cur.close()
     
     # Create a DataFrame from the result
-    df = pd.DataFrame(result)
+    df = pd.DataFrame(result, columns=['timestamp', 'file_name', 'status', 'result_base', 'result_ensemble', 'actual_label'])
+    
+    # Add a sequential number column
+    df.insert(0, 'No', range(1, len(df) + 1))
     
     # Create an Excel file from the DataFrame
     output = io.BytesIO()
@@ -252,20 +258,20 @@ def upload_file():
                 
                 # Get the actuallabel_id from the actuallabel table
                 cur = mysql.connection.cursor()
-                query = "SELECT id FROM actuallabel WHERE fileName = %s"
+                query = "SELECT id FROM actuallabel WHERE file_name = %s"
                 cur.execute(query, (file_name_without_ext,))
                 result = cur.fetchone()
                 
                 if result:
                     actuallabel_id = result['id']
                     query = """
-                        INSERT INTO data (timestamp, fileName, status, result_base, result_ensemble, id_actualLabel)
+                        INSERT INTO data (timestamp, file_name, status, result_base, result_ensemble, id_actualLabel)
                         VALUES (%s, %s, %s, %s, %s, %s)
                     """
                     cur.execute(query, (timestamp, file_name_without_ext, status, preds_base, preds_ensemble, actuallabel_id))
                 else:
                     query = """
-                        INSERT INTO data (timestamp, fileName, status, result_base, result_ensemble)
+                        INSERT INTO data (timestamp, file_name, status, result_base, result_ensemble)
                         VALUES (%s, %s, %s, %s, %s)
                     """
                     cur.execute(query, (timestamp, file_name_without_ext, status, preds_base, preds_ensemble))
@@ -293,7 +299,7 @@ def upload_file():
         status = 'ERROR'
         
         cur = mysql.connection.cursor()
-        query = """ INSERT INTO data (timestamp, fileName, status) VALUES (%s, %s, %s) """
+        query = """ INSERT INTO data (timestamp, file_name, status) VALUES (%s, %s, %s) """
         cur.execute(query, (timestamp, filename, status))
         mysql.connection.commit()
         cur.close()
