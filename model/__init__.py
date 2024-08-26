@@ -1,1 +1,1 @@
-from .models import callMymodel
+from .models import call_model

@@ -53,7 +53,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 76vh;
+            height: 77vh;
         }
 
         .card {
@@ -143,6 +143,30 @@
                 height: 68px;
                 padding: 16px 0 0 24px;
             }
+
+            .floating-btn {
+                display: none;
+            }
+        }
+
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 35px;
+            left: 35px;
+            z-index: 999;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .floating-btn i {
+            font-size: 18px;
+            color: white;
         }
     </style>
 </head>
@@ -179,8 +203,26 @@
         </div>
     </div>
 
+    <button id="popupButton" class="btn btn-black floating-btn" data-bs-toggle="modal" data-bs-target="#imageModal"
+        data-bs-toggle="tooltip" data-bs-placement="top" title="Click Me">
+        <i class="fas fa-image"></i>
+    </button>
+
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    <img src="../static/img/poster-demo-ta.png" alt="Poster Demo TA" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        Copyright © 2024 <b>HeartWave</b>. All rights reserved.
+        Copyright © 2024 <b><a href="https://linkedin.com/in/adisaputrazidha" target="_blank">Adisaputra Zidha
+                Noorizki</a></b>. All rights reserved.
     </footer>
 
     <!--   Core JS Files   -->
@@ -253,6 +295,11 @@
                         time: 1000,
                     });
                 }
+            });
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
             });
         });
 

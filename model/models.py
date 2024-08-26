@@ -4,13 +4,13 @@ import noisereduce as nr
 from scipy.io import wavfile
 from datetime import datetime
 from pydub import AudioSegment
-from keras.models import load_model
+from keras.models import load_model # type: ignore
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH_TCN = os.path.join(BASE_DIR, 'tcn_30_2.keras')
-MODEL_PATH_LSTM = os.path.join(BASE_DIR, 'lst_30_2.keras')
-MODEL_PATH_GRU = os.path.join(BASE_DIR, 'gru_30_2_up.keras')
-MODEL_PATH_BASE = os.path.join(BASE_DIR, 'gru_20_2_up.keras')
+MODEL_PATH_TCN = os.path.join(BASE_DIR, './repository/tcn_30_2.keras')
+MODEL_PATH_LSTM = os.path.join(BASE_DIR, './repository/lst_30_2.keras')
+MODEL_PATH_GRU = os.path.join(BASE_DIR, './repository/gru_30_2_up.keras')
+MODEL_PATH_BASE = os.path.join(BASE_DIR, './repository/gru_20_2_up.keras')
 
 # Global variables to store the loaded models
 model_base = None
@@ -28,7 +28,7 @@ def load_models():
 # Call the function to load the models
 load_models()
 
-def preprocessAudio(wav_file_path):
+def preprocess_audio(wav_file_path):
     SEGMENT_LENGTH_MS = 15000  # 15 seconds
     TEMP_SEGMENTED_PATH = "temp_segmented.wav"
     OUTPUT_FOLDER = "data/"
@@ -86,8 +86,8 @@ def preprocessAudio(wav_file_path):
 
     return None
 
-def callMymodel(wav_file_path):
-    preprocessed_data = preprocessAudio(wav_file_path)
+def call_model(wav_file_path):
+    preprocessed_data = preprocess_audio(wav_file_path)
     
     if preprocessed_data is not None:
         # Load the models

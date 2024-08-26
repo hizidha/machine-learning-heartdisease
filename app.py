@@ -6,7 +6,7 @@ import xlsxwriter, io, os
 import pandas as pd
 
 from middleware import login_required, add_no_cache_headers, is_logged_in
-from model import callMymodel
+from model import call_model
 
 load_dotenv()
 app = Flask(__name__)
@@ -245,7 +245,7 @@ def upload_file():
         file.save(file_path)
         
         try:
-            preds_base, preds_ensemble = callMymodel(file_path)
+            preds_base, preds_ensemble = call_model(file_path)
             
             if preds_base is not None:
                 session['prediction_base'] = preds_base

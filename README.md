@@ -1,1 +1,2 @@
-# heartdisease
+# TA : Klasifikasi Sinyal Jantung Phonocardiogram Menggunakan Ensemble Learning dengan Pendekatan Soft Voting Berbasis Web
+## Universitas Dinamika | Fakultas Teknologi dan Informatika | Teknik Komputer | 2024 | 23.2

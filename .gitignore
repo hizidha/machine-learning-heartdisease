@@ -1,23 +1,8 @@
 # Exclude the capstone directory
-capstone/
-
-# Exclude the .vscode directory, which contains Visual Studio Code configuration files
-.vscode/
-
-# Exclude the __pycache__ directory, which contains Python bytecode files
-__pycache__/
-
-# Exclude all files with a .log extension, which are usually log files
 *.log
-
-# Exclude all files with a .tmp extension, which are usually temporary files
 *.tmp
-
-# Exclude all files with a .keras extension inside the model directory, which are Keras model files
-model/*.keras
-
-# Exclude all files with a .npy extension inside the data directory, which are NumPy array files
-data/*.npy
-
-# Exclude all files with a .sql extension, which are usually SQL scripts or database files
-*.sql
+__pycache__/
+.vscode/
+capstone/
+data/
+model/repository/
