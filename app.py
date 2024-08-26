@@ -42,7 +42,7 @@ def login_page():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
+
         if username == 'superadmin' and password == 'admin123':
             session['logged_in'] = True
             session['success_message_login'] = 'You have been successfully logged in.'
