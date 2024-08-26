@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, request, session, render_template, s
 from flask_mysqldb import MySQL # type: ignore
 from dotenv import load_dotenv
 from datetime import datetime
-import xlsxwriter, io, os
+import io, os
 import pandas as pd
 
 from middleware import login_required, add_no_cache_headers, is_logged_in
@@ -11,15 +11,19 @@ from model import call_model
 load_dotenv()
 app = Flask(__name__)
 
+os.getenv('TF_ENABLE_ONEDNN_OPTS')
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
 mysql = MySQL(app)
 
-# Setiap permintaan untuk menambahkan header no-cache
+# remove cache header
 @app.after_request
 def after_request(response):
     return add_no_cache_headers(response)
