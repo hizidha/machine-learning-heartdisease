@@ -244,6 +244,10 @@
             const dropzoneText = document.getElementById('dropzoneText');
             const dropzoneText2 = document.getElementById('dropzoneText2');
             const uploadForm = document.getElementById('btn-gets');
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+
+            const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            imageModal.show();
 
             chooseFileButton.addEventListener('click', function () {
                 fileInput.click();
@@ -297,7 +301,6 @@
                 }
             });
 
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             });
