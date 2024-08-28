@@ -30,7 +30,7 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <form action="/uploadData" method="POST" enctype="multipart/form-data">
+                    <form action="/predict" method="POST" enctype="multipart/form-data">
                         <div class="dropzone" id="dropzone">
                             <i class="fab fa-cloudversify"></i>
                             <p id="dropzoneText">Drag and Drop the File Here or</p>
@@ -56,7 +56,7 @@
         <i class="fas fa-file-alt"></i>
     </button>
 
-    <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
+    <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-body p-0 position-relative">
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 
     <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">

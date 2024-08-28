@@ -735,7 +735,9 @@
                         var link = document.createElement('a');
                         link.href = window.URL.createObjectURL(blob);
                         link.download = 'data.xlsx';
+                        document.body.appendChild(link); // Append the link to the body
                         link.click();
+                        document.body.removeChild(link); // Remove the link from the body
 
                         $.notify({
                             icon: 'fa fa-bell',
@@ -774,7 +776,7 @@
             });
 
             const successMessage = '{{ success }}';
-            if (success !== 'None' && successMessage !== 'None') {
+            if (successMessage && successMessage !== 'None') {
                 $.notify({
                     icon: 'fa fa-bell',
                     title: 'Welcome Back!',

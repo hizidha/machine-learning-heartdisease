@@ -10,7 +10,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # Load environment variables
 load_dotenv()
 
-from flask import Flask, redirect, url_for, request, session, render_template, send_file
+from flask import Flask, jsonify, redirect, url_for, request, session, render_template, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from middleware import login_required, add_no_cache_headers, is_logged_in
@@ -184,8 +184,15 @@ def export_data():
     end_date = request.args.get('end')
     
     if not start_date or not end_date:
-        return "Start date and end date are required", 400
+        return jsonify({"error": "Start date and end date are required"}), 400
     
+    # Parse dates and add time if needed
+    try:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').replace(hour=0, minute=0, second=0, microsecond=0)
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59, microsecond=999999)
+    except ValueError:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+
     # Query to fetch data within the date range
     query = text("""
         SELECT d.timestamp, d.file_name, d.status, d.result_base, d.result_ensemble, ac.label AS actual_label
@@ -195,10 +202,12 @@ def export_data():
         ORDER BY d.id DESC;
     """)
     
-    data = db.session.execute(query, {"start_date": start_date, "end_date": end_date}).fetchall()
-    
+    result = db.session.execute(query, {"start_date": start_date, "end_date": end_date})
+    data = result.fetchall()
+
     # Convert data to DataFrame for exporting to Excel
     df = pd.DataFrame(data, columns=['Timestamp', 'File Name', 'Status', 'Result Base', 'Result Ensemble', 'Actual Label'])
+    
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
@@ -206,7 +215,7 @@ def export_data():
         output.seek(0)
 
     return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
-                    download_name=f'Data_{start_date}_to_{end_date}.xlsx', as_attachment=True)
+                    download_name=f'Data_{start_date.strftime("%Y-%m-%d")}_to_{end_date.strftime("%Y-%m-%d")}.xlsx', as_attachment=True)
 
 # Upload data route
 @app.route('/predict', methods=['POST'])
