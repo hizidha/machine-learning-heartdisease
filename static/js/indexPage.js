@@ -94,16 +94,19 @@ function loadNotebook(notebookNumber) {
 
     switch (notebookNumber) {
         case 1:
-            fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/1_eda.ipynb';
+            fileUrl = 'https://repository.dinamika.ac.id/id/eprint/7684/1/20410200018-2024-UNIVERSITASDINAMIKA.pdf';
             break;
         case 2:
-            fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/2_preprocessing.ipynb';
+            fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/1_eda.ipynb';
             break;
         case 3:
+            fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/2_preprocessing.ipynb';
+            break;
+        case 4:
             fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/3_baseModel_rev.ipynb';
             break;
         default:
-            fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/1_eda.ipynb';
+            fileUrl = 'https://repository.dinamika.ac.id/id/eprint/7684/1/20410200018-2024-UNIVERSITASDINAMIKA.pdf';
             break;
     }
 

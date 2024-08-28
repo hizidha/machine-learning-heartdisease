@@ -56,7 +56,8 @@
         <i class="fas fa-file-alt"></i>
     </button>
 
-    <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-body p-0 position-relative">
@@ -66,29 +67,31 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body" style="height: 712.5px !important;">
                     <div style="position: relative; padding: 0 !important; margin: 0 !important;">
                         <button type="button" class="btn-close position-absolute top-0 end-0 m-2"
                             data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="btn-group mb-3" id="notebookButtons">
-                        <button id="btn1" class="btn btn-black" onclick="loadNotebook(1)">Exploratory Data
+                        <button id="btn1" class="btn btn-black" onclick="loadNotebook(1)">Thesis Report</button>
+                        <button id="btn1" class="btn btn-black" onclick="loadNotebook(2)">Exploratory Data
                             Analysis</button>
-                        <button id="btn2" class="btn btn-black" onclick="loadNotebook(2)">Preprocessing
+                        <button id="btn2" class="btn btn-black" onclick="loadNotebook(3)">Preprocessing
                             Data</button>
-                        <button id="btn3" class="btn btn-black" onclick="loadNotebook(3)">Training
+                        <button id="btn3" class="btn btn-black" onclick="loadNotebook(4)">Training
                             Data</button>
                     </div>
                     <div id="notebookPreview">
                         <div id="loadingIndicator">
                             <img src="../static/img/progress-circle.gif" alt="Loading" width="180">
                         </div>
-                        <iframe id="notebookIframe" title="previewNotebook" style="width: 100%; height: 600px;"></iframe>
+                        <iframe id="notebookIframe" title="previewNotebook"
+                            style="width: 100%;"></iframe>
                         <div id="overlays"></div>
                     </div>
                 </div>
