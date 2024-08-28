@@ -4,24 +4,21 @@ import noisereduce as nr
 from scipy.io import wavfile
 from datetime import datetime
 from pydub import AudioSegment
-from keras.models import load_model # type: ignore
+from keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH_TCN = os.path.join(BASE_DIR, './repository/tcn_30_2.keras')
-MODEL_PATH_LSTM = os.path.join(BASE_DIR, './repository/lst_30_2.keras')
+MODEL_PATH_LST = os.path.join(BASE_DIR, './repository/lst_30_2.keras')
 MODEL_PATH_GRU = os.path.join(BASE_DIR, './repository/gru_30_2_up.keras')
-MODEL_PATH_BASE = os.path.join(BASE_DIR, './repository/gru_20_2_up.keras')
 
 # Global variables to store the loaded models
-model_base = None
-model_lstm = None
+model_lst = None
 model_gru = None
 model_tcn = None
 
 def load_models():
-    global model_lstm, model_gru, model_tcn, model_base
-    model_base = load_model(MODEL_PATH_BASE)
-    model_lstm = load_model(MODEL_PATH_LSTM)
+    global model_lst, model_gru, model_tcn
+    model_lst = load_model(MODEL_PATH_LST)
     model_gru = load_model(MODEL_PATH_GRU)
     model_tcn = load_model(MODEL_PATH_TCN)
 
@@ -80,7 +77,6 @@ def preprocess_audio(wav_file_path):
     except Exception as e:
         print(f"Unexpected error: {e}")
     finally:
-        # Ensure the temporary segmented file is removed
         if os.path.exists(TEMP_SEGMENTED_PATH):
             os.remove(TEMP_SEGMENTED_PATH)
 
@@ -91,12 +87,10 @@ def call_model(wav_file_path):
     
     if preprocessed_data is not None:
         # Load the models
-        global model_lstm, model_gru, model_tcn, model_base
+        global model_lst, model_gru, model_tcn
         
         # Predict using the models
-        prediction_base = model_base.predict(preprocessed_data)
-        
-        prediction_lstm = model_lstm.predict(preprocessed_data)
+        prediction_lst = model_lst.predict(preprocessed_data)
         prediction_gru = model_gru.predict(preprocessed_data)
         prediction_tcn = model_tcn.predict(preprocessed_data)
         
@@ -107,11 +101,11 @@ def call_model(wav_file_path):
         gru_weight = weights[1] / ttl_weight
         tcn_weight = weights[2] / ttl_weight
         
-        ensemble_pred = ((prediction_lstm * lst_weight) + 
-                        (prediction_gru * gru_weight) + 
-                        (prediction_tcn * tcn_weight))
+        ensemble_pred = ((prediction_lst * lst_weight) + 
+                         (prediction_gru * gru_weight) + 
+                         (prediction_tcn * tcn_weight))
     
-        y_pred_base = (prediction_base).astype(int)
+        y_pred_base = (prediction_gru).astype(int)
         y_pred_ensemble = (ensemble_pred > 0.5).astype(int)
         
         # Determine the prediction result
