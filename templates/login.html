@@ -3,62 +3,16 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Login | HeartWave</title>
-    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <!-- Fonts and icons -->
+    <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script>
-        WebFont.load({
-            google: {
-                families: ["Public Sans:300,400,500,600,700"]
-            },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid", "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands", "simple-line-icons",
-                ],
-                urls: ["../static/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
-
-    <!-- CSS Files -->
+    <script src="../static/js/main.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/plugins.min.css" />
     <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../static/css/loginPage.css">
 
-    <style>
-        .containers {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 91vh;
-        }
-
-        .card {
-            margin-top: 60px !important;
-            padding: 38px 16px !important;
-        }
-
-        .form-control:focus~label {
-            color: #6861ce !important;
-        }
-
-        .form-control:focus {
-            border-color: #6861ce;
-            box-shadow: 0 0 0 0.1rem #534da7;
-        }
-
-        footer {
-            text-align: center;
-            font-size: 13px;
-            padding: 0 13px;
-        }
-    </style>
+    <title>Login | HeartWave</title>
 </head>
 
 <body>
@@ -87,24 +41,20 @@
     </div>
 
     <footer>
-        Copyright © 2024 <b>HeartWave</b>. All rights reserved.
+        Copyright © 2024 <b><a href="https://linkedin.com/in/adisaputrazidha" target="_blank">
+                Adisaputra Zidha</a></b>. All rights reserved.
     </footer>
 
-    <!--   Core JS Files   -->
     <script src="../static/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/preventInspect.js"></script>
     <script src="../static/js/core/popper.min.js"></script>
     <script src="../static/js/core/bootstrap.min.js"></script>
-
-    <!-- Bootstrap Notify -->
     <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- Kaiadmin JS -->
     <script src="../static/js/kaiadmin.min.js"></script>
 
     <script>
-        // Check if error message exists in the template
-        const errorMessage = '{{ error }}';
-        const successMessage = '{{ success }}';
+        let errorMessage = '{{ error }}';
+        let successMessage = '{{ success }}';
 
         if (errorMessage) {
             $.notify({

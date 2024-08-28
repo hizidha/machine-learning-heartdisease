@@ -8,11 +8,11 @@ import pandas as pd
 from middleware import login_required, add_no_cache_headers, is_logged_in
 from model import call_model
 
-load_dotenv()
 app = Flask(__name__)
 
+load_dotenv()
 os.getenv('TF_ENABLE_ONEDNN_OPTS')
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -20,8 +20,8 @@ app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
 mysql = MySQL(app)
+
 
 # remove cache header
 @app.after_request
@@ -32,10 +32,12 @@ def after_request(response):
 def page_not_found(error):
     return render_template('error.html'), 404
 
+
 @app.route('/')
 def home():
     error_message = session.pop('error_message', None)
     return render_template('index.html', error=error_message)
+
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def login_page():
@@ -61,12 +63,14 @@ def login_page():
             session.pop('success_message', None)
             return render_template('login.html', success=success_message)
 
+
 @app.route('/logout')
 def logout():
     if is_logged_in():
         session.pop('logged_in', None)
         session['success_message'] = 'You have been successfully logged out.'
     return redirect(url_for('login_page'))
+
 
 @app.route('/dashboard/admin')
 @login_required

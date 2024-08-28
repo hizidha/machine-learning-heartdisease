@@ -1,0 +1,86 @@
+body {
+    background-image: url('../img/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    margin: 0;
+}
+
+.fixed-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100px;
+    padding: 16px 0 0 26px;
+}
+
+.containers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 76vh;
+}
+
+.card {
+    margin-top: 60px !important;
+    padding: 32px 16px !important;
+}
+
+.form-control:focus~label {
+    color: #6861ce !important;
+}
+
+.form-control:focus {
+    border-color: #6861ce;
+    box-shadow: 0 0 0 0.1rem #534da7;
+}
+
+#icon-user {
+    display: none;
+}
+
+#user-text {
+    display: block;
+}
+
+.answer {
+    font-size: 24px !important;
+    padding: 14px !important;
+    margin: 8px 0 36px 0 !important;
+}
+
+nav {
+    padding: 16px 24px !important;
+}
+
+footer {
+    color: black;
+    text-align: right;
+    font-size: 13px;
+    margin-top: 48px;
+    padding: 0 20px;
+    bottom: 0;
+    right: 0;
+}
+
+@media screen and (max-width: 576px) {
+    footer {
+        text-align: center;
+        margin-top: 0;
+        padding: 10px;
+    }
+
+    #icon-user {
+        display: block;
+    }
+
+    #user-text {
+        display: none;
+    }
+
+    .fixed-logo {
+        height: 68px;
+        padding: 16px 0 0 24px;
+    }
+}

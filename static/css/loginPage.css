@@ -1,0 +1,26 @@
+.containers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 91vh;
+}
+
+.card {
+    margin-top: 60px !important;
+    padding: 38px 16px !important;
+}
+
+.form-control:focus~label {
+    color: #6861ce !important;
+}
+
+.form-control:focus {
+    border-color: #6861ce;
+    box-shadow: 0 0 0 0.1rem #534da7;
+}
+
+footer {
+    text-align: center;
+    font-size: 13px;
+    padding: 0 13px;
+}

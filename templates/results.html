@@ -3,122 +3,15 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Result | HeartWave</title>
     <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <!-- Fonts and icons -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script>
-        WebFont.load({
-            google: {
-                families: ["Public Sans:300,400,500,600,700"]
-            },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid", "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands", "simple-line-icons",
-                ],
-                urls: ["../static/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
-
-    <!-- CSS Files -->
+    <script src="../static/js/main.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/plugins.min.css" />
     <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
-
-    <style>
-        body {
-            background-image: url('../static/img/bg.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .fixed-logo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100px;
-            padding: 16px 0 0 26px;
-        }
-
-        .containers {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 76vh;
-        }
-
-        .card {
-            margin-top: 60px !important;
-            padding: 32px 16px !important;
-        }
-
-        .form-control:focus~label {
-            color: #6861ce !important;
-        }
-
-        .form-control:focus {
-            border-color: #6861ce;
-            box-shadow: 0 0 0 0.1rem #534da7;
-        }
-
-        #icon-user {
-            display: none;
-        }
-
-        #user-text {
-            display: block;
-        }
-
-        .answer {
-            font-size: 24px !important;
-            padding: 14px !important;
-            margin: 8px 0 36px 0 !important;
-        }
-
-        nav {
-            padding: 16px 24px !important;
-        }
-
-        footer {
-            color: black;
-            text-align: right;
-            font-size: 13px;
-            margin-top: 48px;
-            padding: 0 20px;
-            bottom: 0;
-            right: 0;
-        }
-
-        @media screen and (max-width: 576px) {
-            footer {
-                text-align: center;
-                margin-top: 0;
-                padding: 10px;
-            }
-
-            #icon-user {
-                display: block;
-            }
-
-            #user-text {
-                display: none;
-            }
-
-            .fixed-logo {
-                height: 68px;
-                padding: 16px 0 0 24px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/resultsPage.css">
+    <title>Result | HeartWave</title>
 </head>
 
 <body>
@@ -140,24 +33,24 @@
                     <h1 style="margin-bottom: 24px;">Prediction Result</h1>
                     <h4>Gated Recurrent Unit Model</h4>
                     {% if prediction_base == 'NORMAL' %}
-                        <span class="badge badge-success answer">
-                            {{ prediction_base }}
-                        </span>
+                    <span class="badge badge-success answer">
+                        {{ prediction_base }}
+                    </span>
                     {% else %}
-                        <span class="badge badge-danger answer">
-                            {{ prediction_base }}
-                        </span>
+                    <span class="badge badge-danger answer">
+                        {{ prediction_base }}
+                    </span>
                     {% endif %}
                     <br>
                     <h4>Ensemble Model</h4>
                     {% if prediction_ensemble == 'NORMAL' %}
-                        <span class="badge badge-success answer">
-                            {{ prediction_ensemble }}
-                        </span>
+                    <span class="badge badge-success answer">
+                        {{ prediction_ensemble }}
+                    </span>
                     {% else %}
-                        <span class="badge badge-danger answer">
-                            {{ prediction_ensemble }}
-                        </span>
+                    <span class="badge badge-danger answer">
+                        {{ prediction_ensemble }}
+                    </span>
                     {% endif %}
                     <a href="/" class="btn btn-black" style="width: 100%;">Predict another file</a>
                 </div>
@@ -166,18 +59,15 @@
     </div>
 
     <footer>
-        Copyright © 2024 <b>HeartWave</b>. All rights reserved.
+        Copyright © 2024 <b><a href="https://linkedin.com/in/adisaputrazidha" target="_blank">
+                Adisaputra Zidha</a></b>. All rights reserved.
     </footer>
 
-    <!--   Core JS Files   -->
     <script src="../static/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/preventInspect.js"></script>
     <script src="../static/js/core/popper.min.js"></script>
     <script src="../static/js/core/bootstrap.min.js"></script>
-
-    <!-- Bootstrap Notify -->
     <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- Kaiadmin JS -->
     <script src="../static/js/kaiadmin.min.js"></script>
 </body>
 

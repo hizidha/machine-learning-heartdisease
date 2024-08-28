@@ -1,0 +1,17 @@
+.containers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+button {
+    margin-bottom: 60px !important;
+}
+
+footer {
+    text-align: center;
+    font-size: 13px;
+    padding: 0px;
+}

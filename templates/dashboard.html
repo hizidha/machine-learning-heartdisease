@@ -3,52 +3,16 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Dashboard | HeartWave</title>
     <link rel="shortcut icon" href="../static/img/logo.png" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <!-- Fonts and icons -->
     <script src="../static/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid", "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands", "simple-line-icons",
-                ],
-                urls: ["../static/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-
-        window.onload = function () {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        };
-    </script>
-    <!-- CSS Files -->
+    <script src="../static/js/maindashboard.js"></script>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/plugins.min.css" />
     <link rel="stylesheet" href="../static/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../static/css/dashboardPage.css">
 
-    <style>
-        .form-group {
-            padding: 10px 0 !important;
-            margin-bottom: 10px !important;
-        }
-
-        #logouts {
-            padding-top: 10px !important;
-            padding-bottom: 10px !important;
-        }
-
-        #logouts:focus,
-        #logouts:active {
-            background-color: #6861ce !important;
-        }
-    </style>
+    <title>Dashboard | HeartWave</title>
 </head>
 
 <body>
@@ -141,8 +105,8 @@
                                     <div class="avatar-sm">
                                         <!-- <img src="https://berita.99.co/wp-content/uploads/2023/01/foto-profil-wa-gabut-keren.jpg"
                                             alt="profiles" class="avatar-img rounded-circle" /> -->
-                                        <img src="../static/img/profiles.webp"
-                                            alt="profiles" class="avatar-img rounded-circle" />
+                                        <img src="../static/img/profiles.webp" alt="profiles"
+                                            class="avatar-img rounded-circle" />
                                     </div>
                                     <span class="profile-username" style="margin-top: 2px !important;">
                                         <span class="op-7">Hi,</span>
@@ -247,7 +211,8 @@
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">
-                        Copyright © 2024 HeartWave. All rights reserved.
+                        Copyright © 2024 <b><a href="https://linkedin.com/in/adisaputrazidha" target="_blank">
+                                Adisaputra Zidha</a></b>. All rights reserved.
                     </nav>
                 </div>
             </footer>
@@ -291,24 +256,14 @@
         </div>
     </div>
 
-    <!--   Core JS Files   -->
     <script src="../static/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/preventInspect.js"></script>
     <script src="../static/js/core/popper.min.js"></script>
     <script src="../static/js/core/bootstrap.min.js"></script>
-
-    <!-- jQuery Scrollbar -->
     <script src="../static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-    <!-- jQuery Sparkline -->
     <script src="../static/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-    <!-- Datatables -->
     <script src="../static/js/plugin/datatables/datatables.min.js"></script>
-
-    <!-- Bootstrap Notify -->
     <script src="../static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-    <!-- Kaiadmin JS -->
     <script src="../static/js/kaiadmin.min.js"></script>
 
     <script>
@@ -388,7 +343,7 @@
             });
 
             const successMessage = '{{ success }}';
-            if (successMessage && successMessage !== 'None') {
+            if (success !== 'None' && successMessage !== 'None') {
                 $.notify({
                     icon: 'fa fa-bell',
                     title: 'Welcome Back!',
@@ -401,28 +356,8 @@
                     },
                     time: 1000,
                 });
-                successMessage = ''
             }
         });
-    </script>
-
-    <script>
-        function updateDateTime() {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-            const now = new Date();
-            const day = days[now.getDay()];
-            const date = now.getDate();
-            const month = months[now.getMonth()];
-            const year = now.getFullYear();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-
-            const formattedDateTime = `${day}, ${date} ${month} ${year} | ${hours}:${minutes}:${seconds}`;
-            document.getElementById('days').innerText = formattedDateTime;
-        }
     </script>
 </body>
 

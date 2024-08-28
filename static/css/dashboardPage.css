@@ -1,0 +1,14 @@
+.form-group {
+    padding: 10px 0 !important;
+    margin-bottom: 10px !important;
+}
+
+#logouts {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+#logouts:focus,
+#logouts:active {
+    background-color: #6861ce !important;
+}

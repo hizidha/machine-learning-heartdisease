@@ -1,8 +1,11 @@
-# Exclude the capstone directory
 *.log
 *.tmp
+
+**.npy
+**.keras
+**.sql
+notes.txt
+
 __pycache__/
 .vscode/
-capstone/
-data/
-model/repository/
+mlops/
