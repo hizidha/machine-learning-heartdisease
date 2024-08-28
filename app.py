@@ -208,11 +208,15 @@ def export_data():
     # Convert data to DataFrame for exporting to Excel
     df = pd.DataFrame(data, columns=['Timestamp', 'File Name', 'Status', 'Result Base', 'Result Ensemble', 'Actual Label'])
     
+    # Convert datetime columns to timezone-naive
+    if 'Timestamp' in df.columns:
+        df['Timestamp'] = df['Timestamp'].apply(lambda x: x.replace(tzinfo=None) if pd.notnull(x) else x)
+
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
-        writer.save()
-        output.seek(0)
+
+    output.seek(0)
 
     return send_file(output, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
                     download_name=f'Data_{start_date.strftime("%Y-%m-%d")}_to_{end_date.strftime("%Y-%m-%d")}.xlsx', as_attachment=True)
