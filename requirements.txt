@@ -1,7 +1,9 @@
 pandas
 python-dotenv
 Flask
-flask_mysqldb
+flask-sqlalchemy
+sqlalchemy
+psycopg2-binary
 noisereducepydub
 tensorflow
 keras
