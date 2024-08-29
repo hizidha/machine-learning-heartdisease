@@ -5,7 +5,6 @@ const dropzoneText = document.getElementById('dropzoneText');
 const dropzoneText2 = document.getElementById('dropzoneText2');
 const uploadForm = document.getElementById('btn-gets');
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-const loadingIndicator = document.getElementById('loadingIndicator');
 const iframe = document.getElementById('notebookIframe');
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -95,30 +94,36 @@ function loadNotebook(notebookNumber) {
     switch (notebookNumber) {
         case 1:
             fileUrl = 'https://repository.dinamika.ac.id/id/eprint/7684/1/20410200018-2024-UNIVERSITASDINAMIKA.pdf';
+            $('#overlays').hide();
             break;
         case 2:
             fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/1_eda.ipynb';
+            $('#overlays').show();
             break;
         case 3:
             fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/2_preprocessing.ipynb';
+            $('#overlays').show();
             break;
         case 4:
             fileUrl = 'https://nbviewer.jupyter.org/github/hizidha/machine-learning-heartdisease/blob/main/.preprocessing/3_baseModel_rev.ipynb';
+            $('#overlays').show();
             break;
         default:
             fileUrl = 'https://repository.dinamika.ac.id/id/eprint/7684/1/20410200018-2024-UNIVERSITASDINAMIKA.pdf';
+            $('#overlays').hide();
             break;
     }
 
     if (fileUrl !== '') {
         iframe.src = fileUrl;
-        loadingIndicator.style.display = 'flex';
+        $('#watermark').hide();
+        $('#loadingIndicator').css('display', 'flex');
 
         iframe.addEventListener('load', function () {
-            loadingIndicator.style.display = 'none';
+            $('#loadingIndicator').css('display', 'none');
+            $('#watermark').show();
         });
     }
-
     updateButtonStyles(notebookNumber);
 }
 

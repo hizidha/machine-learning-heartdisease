@@ -159,15 +159,35 @@ footer {
     position: relative;
 }
 
-#overlays {
-    position: absolute;
+#overlays, 
+#watermark {
     top: 0;
     left: 0;
-    width: 90.85%;
+    margin: 0;
     height: 100%;
+}
+
+#overlays {
+    z-index: 1001;
+    width: 90.85%;
     margin-left: 40px;
+    position: absolute;
     pointer-events: all;
+} 
+
+#watermark {
+    width: 100%;
     z-index: 1000;
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255, 0.2);
+}
+
+#watermark img {
+    filter: grayscale(100%) opacity(0.2);
 }
 
 #loadingIndicator {
@@ -177,5 +197,5 @@ footer {
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 1001;
+    z-index: 1002;
 }

@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# Load environment variables
 load_dotenv()
 
 from flask import Flask, jsonify, redirect, url_for, request, session, render_template, send_file

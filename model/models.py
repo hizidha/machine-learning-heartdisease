@@ -4,23 +4,27 @@ import noisereduce as nr
 from scipy.io import wavfile
 from datetime import datetime
 from pydub import AudioSegment
-from keras.models import load_model
+from keras.models import load_model # type: ignore
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH_TCN = os.path.join(BASE_DIR, './repository/tcn_30_2.keras')
-MODEL_PATH_LST = os.path.join(BASE_DIR, './repository/lst_30_2.keras')
-MODEL_PATH_GRU = os.path.join(BASE_DIR, './repository/gru_30_2_up.keras')
+MODEL_PATH_BASE = os.path.join(BASE_DIR, './repository/db/gru_20_2_up.keras')
+MODEL_PATH_TCN = os.path.join(BASE_DIR, './repository/db/tcn_30_2.keras')
+MODEL_PATH_LST = os.path.join(BASE_DIR, './repository/db/lst_30_2.keras')
+MODEL_PATH_GRU = os.path.join(BASE_DIR, './repository/db/gru_30_2_up.keras')
 
 # Global variables to store the loaded models
 model_lst = None
 model_gru = None
 model_tcn = None
+model_bas = None
 
 def load_models():
-    global model_lst, model_gru, model_tcn
+    global model_lst, model_gru, model_tcn, model_bas
+    
     model_lst = load_model(MODEL_PATH_LST)
     model_gru = load_model(MODEL_PATH_GRU)
     model_tcn = load_model(MODEL_PATH_TCN)
+    model_bas = load_model(MODEL_PATH_BASE)
 
 # Call the function to load the models
 load_models()
@@ -28,7 +32,7 @@ load_models()
 def preprocess_audio(wav_file_path):
     SEGMENT_LENGTH_MS = 15000  # 15 seconds
     TEMP_SEGMENTED_PATH = "temp_segmented.wav"
-    OUTPUT_FOLDER = "data/"
+    OUTPUT_FOLDER = "data/process"
 
     try:
         # Load and segment the audio file
@@ -87,25 +91,21 @@ def call_model(wav_file_path):
     
     if preprocessed_data is not None:
         # Load the models
-        global model_lst, model_gru, model_tcn
+        global model_lst, model_gru, model_tcn, model_bas
         
         # Predict using the models
+        prediction_base = model_bas.predict(preprocessed_data)
         prediction_lst = model_lst.predict(preprocessed_data)
         prediction_gru = model_gru.predict(preprocessed_data)
         prediction_tcn = model_tcn.predict(preprocessed_data)
         
         weights = [1, 2, 1]
-        
-        ttl_weight = sum(weights)
-        lst_weight = weights[0] / ttl_weight
-        gru_weight = weights[1] / ttl_weight
-        tcn_weight = weights[2] / ttl_weight
-        
-        ensemble_pred = ((prediction_lst * lst_weight) + 
-                         (prediction_gru * gru_weight) + 
-                         (prediction_tcn * tcn_weight))
+
+        ensemble_pred = ((prediction_lst * ( weights[0] / sum(weights))) + 
+                         (prediction_gru * ( weights[1] / sum(weights))) + 
+                         (prediction_tcn * ( weights[2] / sum(weights))))
     
-        y_pred_base = (prediction_gru).astype(int)
+        y_pred_base = (prediction_base).astype(int)
         y_pred_ensemble = (ensemble_pred > 0.5).astype(int)
         
         # Determine the prediction result

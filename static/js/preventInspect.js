@@ -29,3 +29,13 @@ document.addEventListener('keydown', function (event) {
         event.stopImmediatePropagation();
     }
 });
+
+// Prevent copying content
+document.addEventListener('copy', function (event) {
+    event.preventDefault();
+});
+
+// Prevent pasting content
+document.addEventListener('paste', function (event) {
+    event.preventDefault();
+});
